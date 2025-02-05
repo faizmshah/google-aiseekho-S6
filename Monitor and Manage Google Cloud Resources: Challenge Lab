@@ -1,0 +1,11 @@
+We have to use user name 1.
+
+gcloud config set compute/region [Name of your region here]
+
+Task 1:
+
+gcloud storage buckets create gs://[name of bucket]
+
+Task 2:
+
+gcloud pubsub topics create [pub/sub topic name]
