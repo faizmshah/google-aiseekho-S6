@@ -1,0 +1,46 @@
+### Analyze Speech & Language with Google APIs: Challenge Lab
+
+### Task 2;
+
+gcloud ml language analyze-entities --content-file=nl_request.json > nl_response.json
+
+### Task 3;
+
+gcloud ml speech recognize 'gs://cloud-samples-tests/speech/brooklyn.flac' --language-code='en-US' > speech_response.json
+
+### Task 4;
+
+Add the following under the def analyze(movie_review_filename):
+ 
+def analyze(movie_review_filename):
+"""Run a sentiment analysis request on text within a passed filename."""
+ 
+### ADD THESE LINES BELOW
+
+ 
+  client = language_v1.LanguageServiceClient()
+ 
+  with open(movie_review_filename, "r") as review_file:
+     # Instantiates a plain text document.
+     content = review_file.read()
+ 
+  document = language_v1.Document(
+     content=content, type_=language_v1.Document.Type.PLAIN_TEXT
+ )
+ annotations = client.analyze_sentiment(request={"document": document})
+ 
+  # Print the results
+ print_result(annotations)
+
+
+Download the samples from Google Cloud Storage:
+ 
+gsutil cp gs://cloud-samples-tests/natural-language/sentiment-samples.tgz .
+Unzip those samples to a reviews folder:
+ 
+gunzip sentiment-samples.tgz
+tar -xvf sentiment-samples.tar
+ 
+Run the sentiment analysis on one of the specified files:
+ 
+python3 sentiment_analysis.py reviews/bladerunner-pos.txt
