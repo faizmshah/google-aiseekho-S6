@@ -24,3 +24,72 @@ dimension: return_days {
 }
 
 -----------------------------------------------------------------
+
+
+#Task 2
+----------------------------------------------------------------
+delete the default code in the user_details view file
+paste the following code in user_details view file
+-------------------------
+
+view: user_details {
+  derived_table: {
+    explore_source: order_items {
+      column: order_id {}
+      column: user_id {}
+      column: total_revenue {}
+      column: age {field:users.age}
+      column: city {field:users.city}
+      column: state {field:users.state}
+    }
+    
+    datagroup_trigger:  training_ecommerce_default_datagroup
+    
+    persist_for: "2 hours"
+  }
+
+  dimension: order_id {
+    type: number
+
+  }
+
+  dimension: user_id {
+    type: number
+
+  }
+
+  dimension: total_revenue {
+    value_format: "$#,#0.00"
+    type: number
+
+  }
+
+
+  dimension: age {
+    type: number
+  }
+
+  dimension: city {
+
+  }
+
+  dimension: state {
+
+  }
+}
+
+
+-----------------------------------------------------
+
+paste the following code on line 40 into training_ecommerce model
+
+--------------------------------------
+
+join: user_details {
+    
+    type: left_outer
+    
+    sql_on: ${order_items.user_id}= ${user_details.user_id};;
+    
+    relationship: many_to_many
+  }
